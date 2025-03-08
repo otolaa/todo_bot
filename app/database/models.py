@@ -2,9 +2,11 @@ from sqlalchemy import ForeignKey, String, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine
 
-from config import DB_URL
+from environs import env
 
-engine = create_async_engine(url=DB_URL, echo=True)
+env.read_env()
+
+engine = create_async_engine(url=env.str('DB_URL'), echo=True)
 async_session = async_sessionmaker(engine)
 
 class Base(AsyncAttrs, DeclarativeBase):

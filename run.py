@@ -2,16 +2,15 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from environs import env
 
 from app.user import user
-
-from config import TOKEN
-
 from app.database.models import async_main
 
+env.read_env()
 
-async def main():
-    bot = Bot(token=TOKEN,
+async def main():    
+    bot = Bot(token=env.str('TOKEN'),
               default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     
     dp = Dispatcher()
