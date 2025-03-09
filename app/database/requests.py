@@ -5,8 +5,8 @@ from sqlalchemy import select, update, delete, desc
 
 async def get_mess():
     return [
-        'Нажмите на задачу чтобы удалить,',
-        'или напишите новую.',
+        'Чтобы добавить задачу → напишите ✓',
+        'Чтобы удалить задачу → нажмите ↓',
     ]
 
 async def set_user(tid: int, username: str):
