@@ -2,19 +2,14 @@ from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import CommandStart, Command
 
-from app.database.requests import set_user, dell_task, set_task
+from app.database.requests import set_user, dell_task, set_task, get_mess
 import app.keyboards as kb
 
 user = Router()
 
-suf = '~'
-suffix = suf * 30
+suffix = '~'
+separator = suffix * 30
 
-async def get_mess():
-    return [
-        'Нажмите на задачу чтобы удалить,',
-        'или напишите новую.',
-    ]
 
 @user.message(CommandStart())
 async def cmd_start(message: Message):
@@ -27,8 +22,8 @@ async def cmd_start(message: Message):
 async def delete_task(callback: CallbackQuery):
     await dell_task(int(callback.data.split('_')[1]))
     mess = await get_mess()
-    mess.insert(0, 'Задача выполнена')
-    mess.insert(1, suffix)
+    mess.insert(0, 'Успешно удалена')
+    mess.insert(1, separator)
     await callback.message.edit_text(text = '\n'.join(mess),
                                   reply_markup = await kb.tasks(tid=callback.from_user.id))
 
@@ -40,7 +35,7 @@ async def add_task(message: Message):
 
     await set_task(message.from_user.id, message.text)
     mess = await get_mess()
-    mess.insert(0, 'Задача добавлена')
-    mess.insert(1, suffix)
+    mess.insert(0, 'Успешно добавлена')
+    mess.insert(1, separator)
     await message.answer(text = '\n'.join(mess),
                          reply_markup = await kb.tasks(tid=message.from_user.id))

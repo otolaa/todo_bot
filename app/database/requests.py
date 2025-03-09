@@ -3,6 +3,12 @@ from app.database.models import User, Task
 from sqlalchemy import select, update, delete, desc
 
 
+async def get_mess():
+    return [
+        'Нажмите на задачу чтобы удалить,',
+        'или напишите новую.',
+    ]
+
 async def set_user(tid: int, username: str):
     async with async_session() as session:
         user = await session.scalar(select(User).where(User.id == tid))
@@ -13,7 +19,7 @@ async def set_user(tid: int, username: str):
 
 async def get_tasks(tid: int):
     async with async_session() as session:
-        return await session.scalars(select(Task).where(Task.user == tid))
+        return await session.scalars(select(Task).where(Task.user == tid).order_by(desc(Task.id)))
 
 async def set_task(tid: int, title: str):
     async with async_session() as session:
