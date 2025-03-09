@@ -1,12 +1,14 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import CommandStart, Command
+from datetime import datetime, timedelta, timezone
 
 cmd = Router()
 
 version_relise = '0.0.1'
 suffix = '~'
 separator = suffix * 30
+tz_msk = timezone(timedelta(hours=3)) 
 
 
 @cmd.message(F.text, Command("help"))
@@ -36,7 +38,8 @@ async def cmd_getinfo(message: Message):
         f'mid: {message.message_id}',
         f'uid: {message.from_user.id}',        
         separator,
-        f'ver: {version_relise}' 
+        f'{datetime.now(tz_msk).strftime("%d.%m.%y %H:%M %z")}',
+        f'ver: {version_relise}'
     ]
 
     await message.answer(text = '\n'.join(mess), disable_web_page_preview = True)
